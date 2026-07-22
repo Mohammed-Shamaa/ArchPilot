@@ -161,6 +161,7 @@ app.UseIpRateLimiting();
 
 app.MapControllers();
 
+app.MapGet("/", () => Results.Ok(new { name = "ArchPilot API", version = "v1", docs = "/swagger" }));
 app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
 
 if (app.Environment.IsDevelopment())
