@@ -29,6 +29,8 @@ services:
       - key: AI__Model
         value: grok-3
       - key: Cors__Origins__0
+        value: "https://archpilot-373b0nh9m-mohammed-shamaas-projects.vercel.app"
+      - key: Cors__Origins__1
         value: "https://archpilot.vercel.app"
     healthCheckPath: /health
     autoDeploy: true
