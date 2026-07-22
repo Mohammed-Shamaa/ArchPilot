@@ -1,0 +1,157 @@
+{
+  "common": {
+    "appName": "ArchPilot",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "noResults": "No results found",
+    "or": "or",
+    "and": "and"
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "docs": "Documentation",
+    "login": "Login",
+    "register": "Sign Up",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "settings": "Settings"
+  },
+  "hero": {
+    "badge": "AI-Powered Software Engineering",
+    "title": "Transform Ideas Into",
+    "titleHighlight": "Engineering Blueprints",
+    "subtitle": "ArchPilot uses multi-agent AI to analyze your software idea and produce comprehensive architecture documents, database designs, API specs, and implementation plans.",
+    "cta": "Start Building",
+    "ctaSecondary": "View Demo",
+    "stat1Value": "10x",
+    "stat1Label": "Faster Planning",
+    "stat2Value": "95%",
+    "stat2Label": "Accuracy",
+    "stat3Value": "50+",
+    "stat3Label": "Document Types"
+  },
+  "features": {
+    "sectionTitle": "Everything You Need",
+    "sectionSubtitle": "A complete AI-powered platform that covers every aspect of software engineering planning",
+    "multiAgent": {
+      "title": "Multi-Agent AI System",
+      "description": "7 specialized AI agents work together: Architect, DB Designer, API Designer, Frontend Expert, Backend Expert, Security Expert, and QA Expert."
+    },
+    "documents": {
+      "title": "Comprehensive Documents",
+      "description": "Generate architecture docs, database schemas, API specs, UI/UX wireframes, security plans, and test strategies."
+    },
+    "export": {
+      "title": "Export Anywhere",
+      "description": "Download your blueprints as professional PDF or DOCX documents, ready for your team or stakeholders."
+    },
+    "context": {
+      "title": "Smart Context",
+      "description": "AI agents maintain full project context across conversations, building on previous decisions and requirements."
+    },
+    "collaboration": {
+      "title": "Team Collaboration",
+      "description": "Share projects with team members, track document versions, and collaborate on architecture decisions."
+    },
+    "security": {
+      "title": "Enterprise Security",
+      "description": "Role-based access control, encrypted data, secure authentication, and compliance-ready infrastructure."
+    }
+  },
+  "workflow": {
+    "sectionTitle": "How It Works",
+    "sectionSubtitle": "From idea to blueprint in four simple steps",
+    "step1": {
+      "title": "Describe Your Idea",
+      "description": "Tell ArchPilot about your software idea. What problem does it solve? Who are the users?"
+    },
+    "step2": {
+      "title": "AI Analysis",
+      "description": "Our 7 AI agents analyze your requirements from different engineering perspectives."
+    },
+    "step3": {
+      "title": "Review & Refine",
+      "description": "Review generated documents, ask questions, and refine the output with AI assistance."
+    },
+    "step4": {
+      "title": "Export & Build",
+      "description": "Download professional blueprints and start building with confidence."
+    }
+  },
+  "cta": {
+    "title": "Ready to Build Smarter?",
+    "subtitle": "Join thousands of engineers using AI to accelerate their planning process.",
+    "button": "Get Started Free",
+    "note": "No credit card required • Free tier includes 5 projects"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your ArchPilot account",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "forgotPassword": "Forgot password?",
+      "error": "Invalid email or password"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Start your journey with ArchPilot",
+      "fullName": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "error": "Registration failed"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "projects": "Projects",
+    "newProject": "New Project",
+    "recentProjects": "Recent Projects",
+    "noProjects": "No projects yet",
+    "noProjectsDesc": "Create your first project to get started with AI-powered engineering blueprints.",
+    "createFirst": "Create First Project"
+  },
+  "project": {
+    "name": "Project Name",
+    "description": "Description",
+    "idea": "Software Idea",
+    "ideaPlaceholder": "Describe your software idea in detail...",
+    "status": "Status",
+    "createdAt": "Created",
+    "documents": "Documents",
+    "conversations": "Conversations"
+  },
+  "footer": {
+    "description": "AI-powered software engineering lifecycle platform. Transform ideas into comprehensive blueprints.",
+    "product": "Product",
+    "features": "Features",
+    "pricing": "Pricing",
+    "docs": "Documentation",
+    "company": "Company",
+    "about": "About",
+    "blog": "Blog",
+    "careers": "Careers",
+    "contact": "Contact",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "copyright": "© 2026 ArchPilot. All rights reserved."
+  }
+}
