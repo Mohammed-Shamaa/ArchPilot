@@ -1,4 +1,5 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://archpilot-api-myps.onrender.com/api";
+const rawBase = process.env.NEXT_PUBLIC_API_URL || "https://archpilot-api-myps.onrender.com";
+const API_BASE = rawBase.endsWith("/api") ? rawBase : `${rawBase.replace(/\/+$/, "")}/api`;
 
 interface ApiOptions {
   method?: string;
