@@ -13,7 +13,9 @@ services:
       - key: ASPNETCORE_URLS
         value: http://+:$PORT
       - key: ConnectionStrings__DefaultConnection
-        sync: false
+        fromDatabase:
+          name: archpilot-db
+          property: connectionString
       - key: Jwt__Key
         sync: false
       - key: Jwt__Issuer
@@ -36,7 +38,7 @@ services:
     autoDeploy: true
     branch: master
 
-  - type: postgresql
+  - type: database
     name: archpilot-db
     plan: free
     databaseName: archpilot
