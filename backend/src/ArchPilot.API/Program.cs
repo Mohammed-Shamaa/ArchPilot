@@ -20,6 +20,7 @@ using AspNetCoreRateLimit;
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
     .WriteTo.Console()
     .WriteTo.File("logs/archpilot-.log", rollingInterval: RollingInterval.Day)
     .CreateLogger();
@@ -28,12 +29,16 @@ builder.Host.UseSerilog();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString, npgsql =>
+    {
+        npgsql.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+        npgsql.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null);
+    }));
 
 builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(ArchPilot.Application.Common.Interfaces.IApplicationDbContext).Assembly));
+    cfg.RegisterServicesFromAssembly(typeof(IApplicationDbContext).Assembly));
 
-builder.Services.AddValidatorsFromAssembly(typeof(ArchPilot.Application.Common.Interfaces.IApplicationDbContext).Assembly);
+builder.Services.AddValidatorsFromAssembly(typeof(IApplicationDbContext).Assembly);
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
@@ -47,12 +52,15 @@ builder.Services.AddScoped<IAIContextService, AIContextService>();
 builder.Services.AddScoped<IDocumentExportService, PdfExportService>();
 builder.Services.AddScoped<IDocumentValidator, DocumentValidator>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddHttpClient<IAIService, GrokAIService>(client =>
 {
     var apiKey = builder.Configuration["AI:ApiKey"];
-    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+    if (!string.IsNullOrEmpty(apiKey))
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+    client.Timeout = TimeSpan.FromMinutes(3);
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -78,7 +86,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        var origins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? new[] { "http://localhost:3000" };
+        var origins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>()
+            ?? new[] { "http://localhost:3000", "https://archpilot.vercel.app" };
         policy.WithOrigins(origins)
             .AllowAnyHeader()
             .AllowAnyMethod()
@@ -90,7 +99,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ArchPilot API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "ArchPilot API",
+        Version = "v1",
+        Description = "AI-Powered Software Engineering Lifecycle Platform API"
+    });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme",
@@ -124,11 +138,12 @@ builder.Services.AddMvcCore().AddApplicationPart(typeof(ArchPilot.API.Controller
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ArchPilot API v1");
+    c.RoutePrefix = string.Empty;
+});
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
@@ -139,12 +154,17 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseIpRateLimiting();
+
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
+    }
 }
 
 app.Run();

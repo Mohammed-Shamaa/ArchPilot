@@ -38,8 +38,8 @@ export default function LoginPage() {
 
       login(data.user, data.token, data.refreshToken);
       router.push(`/${locale}/dashboard`);
-    } catch (err) {
-      setError(t("error"));
+    } catch (err: any) {
+      setError(err.message || t("error"));
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ export default function LoginPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              <div className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive">
                 {error}
               </div>
             )}
@@ -66,17 +66,25 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
                 required
+                autoComplete="email"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">{t("password")}</label>
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium">{t("password")}</label>
+                <button type="button" className="text-xs text-primary hover:underline">
+                  {t("forgotPassword")}
+                </button>
+              </div>
               <Input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete="current-password"
               />
             </div>
 
@@ -87,7 +95,7 @@ export default function LoginPage() {
 
             <p className="text-center text-sm text-muted-foreground">
               {t("noAccount")}{" "}
-              <Link href={`/${locale}/register`} className="text-primary hover:underline">
+              <Link href={`/${locale}/register`} className="text-primary hover:underline font-medium">
                 {t("signUp")}
               </Link>
             </p>

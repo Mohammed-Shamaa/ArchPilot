@@ -31,6 +31,11 @@ export default function RegisterPage() {
       return;
     }
 
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
@@ -46,15 +51,15 @@ export default function RegisterPage() {
 
       login(data.user, data.token, data.refreshToken);
       router.push(`/${locale}/dashboard`);
-    } catch (err) {
-      setError(t("error"));
+    } catch (err: any) {
+      setError(err.message || t("error"));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] px-4">
+    <div className="flex items-center justify-center min-h-[calc(100vh-200px)] px-4 py-8">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">{t("title")}</CardTitle>
@@ -63,7 +68,7 @@ export default function RegisterPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              <div className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive">
                 {error}
               </div>
             )}
@@ -74,7 +79,9 @@ export default function RegisterPage() {
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
+                placeholder="John Doe"
                 required
+                autoComplete="name"
               />
             </div>
 
@@ -84,7 +91,9 @@ export default function RegisterPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
                 required
+                autoComplete="email"
               />
             </div>
 
@@ -96,7 +105,9 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
+                autoComplete="new-password"
               />
+              <p className="text-xs text-muted-foreground">Must be at least 8 characters</p>
             </div>
 
             <div className="space-y-2">
@@ -107,6 +118,7 @@ export default function RegisterPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={8}
+                autoComplete="new-password"
               />
             </div>
 
@@ -117,7 +129,7 @@ export default function RegisterPage() {
 
             <p className="text-center text-sm text-muted-foreground">
               {t("hasAccount")}{" "}
-              <Link href={`/${locale}/login`} className="text-primary hover:underline">
+              <Link href={`/${locale}/login`} className="text-primary hover:underline font-medium">
                 {t("signIn")}
               </Link>
             </p>

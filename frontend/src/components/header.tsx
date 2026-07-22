@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/stores/auth-store";
 import { useLanguageStore } from "@/stores/language-store";
 import { useThemeStore } from "@/stores/theme-store";
-import { Moon, Sun, Globe } from "lucide-react";
+import { Moon, Sun, Globe, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -14,6 +15,7 @@ export function Header() {
   const { isAuthenticated, logout } = useAuthStore();
   const { setLocale } = useLanguageStore();
   const { theme, setTheme } = useThemeStore();
+  const [mobileOpen, setMobileOpen] = useState(false);
   const isRTL = locale === "ar";
 
   const toggleLanguage = () => {
@@ -42,7 +44,7 @@ export function Header() {
             <path d="M2 17l10 5 10-5" />
             <path d="M2 12l10 5 10-5" />
           </svg>
-          <span className="font-bold">{t("home") === "Home" ? "ArchPilot" : "آرك بايلوت"}</span>
+          <span className="font-bold text-lg">ArchPilot</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
@@ -90,7 +92,7 @@ export function Header() {
               {t("logout")}
             </Button>
           ) : (
-            <>
+            <div className="hidden md:flex items-center gap-2">
               <Link href={`/${locale}/login`}>
                 <Button variant="ghost" size="sm">
                   {t("login")}
@@ -99,10 +101,61 @@ export function Header() {
               <Link href={`/${locale}/register`}>
                 <Button size="sm">{t("register")}</Button>
               </Link>
-            </>
+            </div>
           )}
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </Button>
         </div>
       </div>
+
+      {mobileOpen && (
+        <div className="md:hidden border-t bg-background p-4 space-y-3">
+          <Link
+            href={`/${locale}`}
+            className="block text-sm font-medium text-muted-foreground hover:text-foreground"
+            onClick={() => setMobileOpen(false)}
+          >
+            {t("home")}
+          </Link>
+          <Link
+            href={`/${locale}#features`}
+            className="block text-sm font-medium text-muted-foreground hover:text-foreground"
+            onClick={() => setMobileOpen(false)}
+          >
+            {t("features")}
+          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link
+                href={`/${locale}/dashboard`}
+                className="block text-sm font-medium text-muted-foreground hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                {t("dashboard")}
+              </Link>
+              <Button variant="ghost" size="sm" onClick={() => { logout(); setMobileOpen(false); }}>
+                {t("logout")}
+              </Button>
+            </>
+          ) : (
+            <div className="flex gap-2">
+              <Link href={`/${locale}/login`} onClick={() => setMobileOpen(false)}>
+                <Button variant="ghost" size="sm">{t("login")}</Button>
+              </Link>
+              <Link href={`/${locale}/register`} onClick={() => setMobileOpen(false)}>
+                <Button size="sm">{t("register")}</Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
     </header>
   );
 }

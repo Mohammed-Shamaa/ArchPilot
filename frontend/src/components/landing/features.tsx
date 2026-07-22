@@ -15,7 +15,7 @@ export function FeaturesSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-3xl md:text-4xl font-bold">{t("sectionTitle")}</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             {t("sectionSubtitle")}
           </p>
         </div>
@@ -24,13 +24,15 @@ export function FeaturesSection() {
           {keys.map((key, i) => {
             const Icon = icons[i];
             return (
-              <Card key={key} className="relative overflow-hidden hover:shadow-lg transition-shadow">
+              <Card key={key} className="relative overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0 bg-background/80 backdrop-blur">
                 <CardHeader>
-                  <div className="mb-2 h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Icon className="h-5 w-5 text-primary" />
+                  <div className="mb-2 h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <Icon className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle>{t(`${key}.title`)}</CardTitle>
-                  <CardDescription>{t(`${key}.description`)}</CardDescription>
+                  <CardTitle className="text-xl">{t(`${key}.title`)}</CardTitle>
+                  <CardDescription className="text-base leading-relaxed">
+                    {t(`${key}.description`)}
+                  </CardDescription>
                 </CardHeader>
               </Card>
             );

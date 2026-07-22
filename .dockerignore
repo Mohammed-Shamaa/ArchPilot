@@ -1,0 +1,16 @@
+**/.git
+**/.vs
+**/.vscode
+**/node_modules
+**/obj
+**/bin
+**/publish
+**/.next
+**/out
+**/.env*.local
+**/logs
+**/Dockerfile
+**/docker-compose*.yml
+**/.dockerignore
+**/render.yaml
+**/README.md

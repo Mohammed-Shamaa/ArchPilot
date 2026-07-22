@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: archpilot-api
+    runtime: dotnet
+    region: oregon
+    plan: free
+    env: dotnet
+    buildCommand: cd backend && dotnet publish src/ArchPilot.API -c Release -o ../publish
+    startCommand: cd backend/publish && dotnet ArchPilot.API.dll
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://+:$PORT
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+      - key: Jwt__Key
+        sync: false
+      - key: Jwt__Issuer
+        value: ArchPilot
+      - key: Jwt__Audience
+        value: ArchPilot
+      - key: Jwt__ExpiryMinutes
+        value: "60"
+      - key: Jwt__RefreshExpiryDays
+        value: "7"
+      - key: AI__ApiUrl
+        value: "https://api.x.ai/v1"
+      - key: AI__ApiKey
+        sync: false
+      - key: AI__Model
+        value: grok-3
+      - key: Cors__Origins__0
+        value: "https://archpilot.vercel.app"
+    healthCheckPath: /swagger/index.html
+    autoDeploy: true
+    branch: master
+
+  - type: postgresql
+    name: archpilot-db
+    plan: free
+    databaseName: archpilot
+    ipAllowList: []
