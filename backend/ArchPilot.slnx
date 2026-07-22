@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ArchPilot.API/ArchPilot.API.csproj" />
+    <Project Path="src/ArchPilot.Application/ArchPilot.Application.csproj" />
+    <Project Path="src/ArchPilot.Domain/ArchPilot.Domain.csproj" />
+    <Project Path="src/ArchPilot.Infrastructure/ArchPilot.Infrastructure.csproj" />
+    <Project Path="src/ArchPilot.Persistence/ArchPilot.Persistence.csproj" />
+  </Folder>
+</Solution>
