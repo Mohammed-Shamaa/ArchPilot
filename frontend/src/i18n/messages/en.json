@@ -109,6 +109,7 @@
     "register": {
       "title": "Create Account",
       "subtitle": "Start your journey with ArchPilot",
+      "username": "Username",
       "fullName": "Full Name",
       "email": "Email",
       "password": "Password",

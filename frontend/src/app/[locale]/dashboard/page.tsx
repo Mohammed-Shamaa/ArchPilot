@@ -82,7 +82,7 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold">{t("projects")}</h1>
           {user && (
             <p className="text-muted-foreground mt-1">
-              {t("welcome")}, <span className="font-medium text-foreground">{user.fullName}</span>
+              {t("welcome")}, <span className="font-medium text-foreground">{user.username}</span>
             </p>
           )}
         </div>

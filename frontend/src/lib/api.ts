@@ -7,6 +7,13 @@ interface ApiOptions {
   token?: string;
 }
 
+interface ApiResponse<T> {
+  success: boolean;
+  data: T | null;
+  message?: string;
+  errors?: string[];
+}
+
 export async function apiFetch<T>(
   endpoint: string,
   options: ApiOptions = {}
@@ -27,11 +34,14 @@ export async function apiFetch<T>(
     body: body ? JSON.stringify(body) : undefined,
   });
 
+  const json = await res.json().catch(() => null);
+
   if (!res.ok) {
-    const error = await res.json().catch(() => ({ message: "Request failed" }));
-    throw new Error(error.message || `HTTP ${res.status}`);
+    throw new Error(
+      json?.message || (json?.errors?.length ? json.errors.join(", ") : `HTTP ${res.status}`)
+    );
   }
 
-  const text = await res.text();
-  return text ? JSON.parse(text) : (undefined as T);
+  const apiResponse = json as ApiResponse<T>;
+  return apiResponse.data as T;
 }

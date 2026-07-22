@@ -16,7 +16,7 @@ export default function RegisterPage() {
   const locale = useLocale();
   const router = useRouter();
   const { login } = useAuthStore();
-  const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -43,10 +43,10 @@ export default function RegisterPage() {
       const data = await apiFetch<{
         token: string;
         refreshToken: string;
-        user: { id: string; email: string; fullName: string };
+        user: { id: string; email: string; username: string };
       }>("/auth/register", {
         method: "POST",
-        body: { fullName, email, password },
+        body: { username, email, password },
       });
 
       login(data.user, data.token, data.refreshToken);
@@ -74,15 +74,17 @@ export default function RegisterPage() {
             )}
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">{t("fullName")}</label>
+              <label className="text-sm font-medium">{t("username")}</label>
               <Input
                 type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder="John Doe"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="johndoe"
                 required
-                autoComplete="name"
+                minLength={3}
+                autoComplete="username"
               />
+              <p className="text-xs text-muted-foreground">Must be at least 3 characters</p>
             </div>
 
             <div className="space-y-2">

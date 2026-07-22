@@ -30,7 +30,7 @@ export default function LoginPage() {
       const data = await apiFetch<{
         token: string;
         refreshToken: string;
-        user: { id: string; email: string; fullName: string };
+        user: { id: string; email: string; username: string };
       }>("/auth/login", {
         method: "POST",
         body: { email, password },
