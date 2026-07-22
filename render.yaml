@@ -1,12 +1,10 @@
 services:
   - type: web
     name: archpilot-api
-    runtime: dotnet
+    runtime: docker
     region: oregon
     plan: free
-    env: dotnet
-    buildCommand: cd backend && dotnet publish src/ArchPilot.API -c Release -o ../publish
-    startCommand: cd backend/publish && dotnet ArchPilot.API.dll
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production

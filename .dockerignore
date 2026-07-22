@@ -1,0 +1,13 @@
+**/.git
+**/.vs
+**/.vscode
+**/node_modules
+**/obj
+**/bin
+**/publish
+**/.next
+**/out
+**/.env*.local
+**/logs
+**/render.yaml
+**/README.md
