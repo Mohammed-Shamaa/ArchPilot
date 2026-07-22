@@ -30,6 +30,6 @@ services:
         value: grok-3
       - key: Cors__Origins__0
         value: "https://archpilot.vercel.app"
-    healthCheckPath: /swagger/index.html
+    healthCheckPath: /health
     autoDeploy: true
     branch: master

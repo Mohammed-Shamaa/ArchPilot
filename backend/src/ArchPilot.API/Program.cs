@@ -143,12 +143,14 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ArchPilot API v1");
-    c.RoutePrefix = string.Empty;
 });
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowFrontend");
 
@@ -158,6 +160,8 @@ app.UseAuthorization();
 app.UseIpRateLimiting();
 
 app.MapControllers();
+
+app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }));
 
 if (app.Environment.IsDevelopment())
 {
