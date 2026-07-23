@@ -20,6 +20,9 @@ artifacts/
 .idea/
 *.sln.iml
 
+## Visual Studio
+.vs/
+
 ## VS Code
 .vscode/
 
