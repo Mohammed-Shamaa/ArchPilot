@@ -12,11 +12,11 @@ import { Plus, FolderOpen, MessageSquare, FileText, Loader2, ArrowRight } from "
 
 interface Project {
   id: string;
-  name: string;
-  description: string;
-  idea?: string;
+  projectName: string;
+  description?: string;
   status: string;
   createdAt: string;
+  lastAccessedAt: string;
 }
 
 export default function DashboardPage() {
@@ -44,8 +44,8 @@ export default function DashboardPage() {
 
   const loadProjects = async () => {
     try {
-      const data = await apiFetch<{ items: Project[] }>("/projects", { token: token || undefined });
-      setProjects(data.items || []);
+      const data = await apiFetch<Project[]>("/projects", { token: token || undefined });
+      setProjects(data || []);
     } catch {
       // Projects may not exist yet
     } finally {
@@ -61,7 +61,7 @@ export default function DashboardPage() {
       const project = await apiFetch<Project>("/projects", {
         method: "POST",
         token: token || undefined,
-        body: { name: newName, idea: newIdea },
+        body: { ProjectName: newName, Description: newIdea },
       });
       setProjects((prev) => [project, ...prev]);
       setShowNewProject(false);
@@ -121,7 +121,6 @@ export default function DashboardPage() {
                   value={newIdea}
                   onChange={(e) => setNewIdea(e.target.value)}
                   placeholder={tp("ideaPlaceholder")}
-                  required
                 />
               </div>
               <div className="flex gap-2">
@@ -168,11 +167,11 @@ export default function DashboardPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 group-hover:text-primary transition-colors">
                   <FolderOpen className="h-5 w-5" />
-                  {project.name}
+                  {project.projectName}
                   <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
                 </CardTitle>
                 <CardDescription className="line-clamp-2">
-                  {project.description || project.idea || "No description"}
+                  {project.description || "No description"}
                 </CardDescription>
               </CardHeader>
               <CardContent>

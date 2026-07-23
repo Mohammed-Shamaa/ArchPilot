@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/stores/auth-store";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, getApiBase } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -48,11 +48,11 @@ export default function ProjectPage() {
 
   const loadDocuments = async () => {
     try {
-      const data = await apiFetch<{ items: Document[] }>(
+      const data = await apiFetch<Document[]>(
         `/documents/project/${projectId}`,
         { token: token || undefined }
       );
-      setDocuments(data.items || []);
+      setDocuments(data || []);
     } catch {
       // Documents API may not have data yet
     }
@@ -121,7 +121,7 @@ export default function ProjectPage() {
   const exportDocument = async (docId: string, format: string) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5157/api"}/documents/${docId}/export?format=${format}`,
+        `${getApiBase()}/documents/${docId}/export?format=${format}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
