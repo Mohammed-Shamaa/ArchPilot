@@ -87,7 +87,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         var origins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>()
-            ?? new[] { "http://localhost:3000", "https://archpilot.vercel.app" };
+            ?? new[] { "http://localhost:3000", "https://archpilot.vercel.app", "https://archpilot-ecru.vercel.app", "https://archpilot-git-master-mohammed-shamaas-projects.vercel.app" };
         policy.WithOrigins(origins)
             .AllowAnyHeader()
             .AllowAnyMethod()
