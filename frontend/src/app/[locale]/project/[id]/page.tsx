@@ -105,10 +105,10 @@ export default function ProjectPage() {
       if (data.documentCreated) {
         loadDocuments();
       }
-    } catch (err) {
+    } catch (err: any) {
       const errorMsg: Message = {
         id: (Date.now() + 1).toString(),
-        content: "Sorry, an error occurred. Please try again.",
+        content: err.message || "Sorry, an error occurred. Please try again.",
         senderType: "ai",
         createdAt: new Date().toISOString(),
       };
@@ -141,7 +141,7 @@ export default function ProjectPage() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-56px)]">
+    <div className="flex fixed inset-0 top-14 z-10">
       {/* Chat Panel */}
       <div className="flex-1 flex flex-col">
         <div className="border-b px-4 py-3 flex items-center gap-3">
