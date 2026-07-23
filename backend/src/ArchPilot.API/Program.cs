@@ -27,7 +27,18 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
+if (connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase) || connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase))
+{
+    var withoutScheme = connectionString.Split("://", 2)[1];
+    var atIndex = withoutScheme.LastIndexOf('@');
+    var userInfo = withoutScheme[..atIndex].Split(':', 2);
+    var hostAndPath = withoutScheme[(atIndex + 1)..];
+    var slashIndex = hostAndPath.IndexOf('/');
+    var host = slashIndex >= 0 ? hostAndPath[..slashIndex] : hostAndPath;
+    var database = slashIndex >= 0 ? hostAndPath[(slashIndex + 1)..] : "";
+    connectionString = $"Host={host};Database={database};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require";
+}
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString, npgsql =>
     {
